@@ -31,6 +31,7 @@ namespace ProEventos.API
             services.AddDbContext<DataContext>(
                 context => context.UseSqlite(Configuration.GetConnectionString("Default"))
             );
+            services.AddCors();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -44,7 +45,9 @@ namespace ProEventos.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
                 app.UseSwagger();
+
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProEventos.API v1"));
             }
 
@@ -52,6 +55,9 @@ namespace ProEventos.API
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseCors(x => x.AllowAnyHeader()
+                                .AllowAnyHeader()
+                                .AllowAnyOrigin());
 
             app.UseEndpoints(endpoints =>
             {
